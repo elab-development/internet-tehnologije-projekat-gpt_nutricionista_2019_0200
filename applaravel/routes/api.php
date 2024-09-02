@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MealController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,4 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/meal-plans', [MealPlanController::class, 'store']);
     Route::put('/meal-plans/{id}', [MealPlanController::class, 'update']);
     Route::delete('/meal-plans/{id}', [MealPlanController::class, 'destroy']);
+
+
+    Route::get('/meals', [MealController::class, 'index']);
+    Route::get('/meals/{id}', [MealController::class, 'show']);
+    Route::post('/meals', [MealController::class, 'store']);
+    Route::put('/meals/{id}', [MealController::class, 'update']);
+    Route::delete('/meals/{id}', [MealController::class, 'destroy']);
 });
