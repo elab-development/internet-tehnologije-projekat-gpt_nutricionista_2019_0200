@@ -27,7 +27,7 @@ class MealFactory extends Factory
             'ingredients' => $this->faker->words(5, true), // Lista sastojaka
             'instructions' => $this->faker->paragraph(), // Uputstvo za pripremu
             'meal_type' => $this->faker->randomElement(['breakfast', 'lunch', 'dinner', 'snack']),
-            'servings' => $this->faker->numberBetween(1, 4),
+          
         ];
     }
 }

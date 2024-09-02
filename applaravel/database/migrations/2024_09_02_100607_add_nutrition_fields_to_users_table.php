@@ -14,14 +14,15 @@ class AddNutritionFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->float('height')->nullable(); // Visina korisnika u cm
-            $table->float('weight')->nullable(); // Težina korisnika u kg
-            $table->date('date_of_birth')->nullable(); // Datum rođenja korisnika
-            $table->string('food_preferences')->nullable(); // Preferencije hrane
-            $table->string('dietary_goals')->nullable(); // Ciljevi ishrane
-            $table->string('activity_level')->nullable(); // Nivo fizičke aktivnosti
-            $table->float('target_weight')->nullable(); // Ciljana težina u kg
-            $table->text('medical_conditions')->nullable(); // Medicinska stanja
+            $table->float('height'); // Visina korisnika u cm
+            $table->float('weight'); // Težina korisnika u kg
+            $table->date('date_of_birth'); // Datum rođenja korisnika
+            $table->string('food_preferences'); // Preferencije hrane
+            $table->string('dietary_goals'); // Ciljevi ishrane
+            $table->string('activity_level'); // Nivo fizičke aktivnosti
+            $table->float('target_weight'); // Ciljana težina u kg
+            $table->text('medical_conditions'); // Medicinska stanja
+            $table->string('role'); // Medicinska stanja
         });
     }
 

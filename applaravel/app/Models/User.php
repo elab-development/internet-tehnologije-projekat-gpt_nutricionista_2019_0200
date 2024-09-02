@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-
+    use Notifiable,HasFactory;
+    
     /**
      * Atributi koji se mogu masovno dodeljivati.
      *
@@ -27,6 +28,7 @@ class User extends Authenticatable
         'activity_level',      // Nivo fizičke aktivnosti (npr. sedentarni, aktivni)
         'target_weight',       // Ciljana težina korisnika u kg
         'medical_conditions',  // Medicinska stanja (npr. dijabetes, hipertenzija)
+        'role' //admin, user
     ];
 
     /**

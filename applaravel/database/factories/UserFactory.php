@@ -31,6 +31,7 @@ class UserFactory extends Factory
             'target_weight' => $this->faker->numberBetween(50, 100), // ciljana težina u kg
             'medical_conditions' => $this->faker->randomElement(['diabetes', 'hypertension', 'none']),
             'remember_token' => Str::random(10),
+            'role'=>$this->faker->randomElement(['admin', 'user']),
         ];
     }
 }
