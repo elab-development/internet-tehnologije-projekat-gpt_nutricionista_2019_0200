@@ -25,6 +25,7 @@ class Meal extends Model
         'instructions',         // Uputstvo za pripremu jela
         'meal_type',            // Tip obroka (npr. doručak, ručak, večera, užina)
         'servings',             // Broj porcija
+        
     ];
 
     /**
