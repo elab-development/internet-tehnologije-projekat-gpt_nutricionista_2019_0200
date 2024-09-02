@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +22,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/meal-plans', [MealPlanController::class, 'index']);
+    Route::get('/meal-plans/{id}', [MealPlanController::class, 'show']);
+    Route::post('/meal-plans', [MealPlanController::class, 'store']);
+    Route::put('/meal-plans/{id}', [MealPlanController::class, 'update']);
+    Route::delete('/meal-plans/{id}', [MealPlanController::class, 'destroy']);
+});
