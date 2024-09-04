@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class MealController extends Controller
 {
+ 
+    
     // Prikaz svih obroka za određeni plan ishrane
     public function index(Request $request)
     {
