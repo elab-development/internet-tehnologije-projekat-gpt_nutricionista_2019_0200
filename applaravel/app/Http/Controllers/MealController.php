@@ -11,14 +11,25 @@ use Illuminate\Support\Facades\Auth;
 class MealController extends Controller
 {
  
-    
-    // Prikaz svih obroka za određeni plan ishrane
-    public function index(Request $request)
-    {
-        $mealPlanId = $request->query('meal_plan_id');
-        $meals = Meal::where('meal_plan_id', $mealPlanId)->get();
-        return MealResource::collection($meals);
-    }
+  
+        // Prikaz svih obroka za određeni plan ishrane sa pretragom i paginacijom
+        public function index(Request $request)
+        {
+            $mealPlanId = $request->query('meal_plan_id');
+            $query = Meal::where('meal_plan_id', $mealPlanId);
+
+            // Filtriranje po imenu obroka
+            if ($request->has('search')) {
+                $searchTerm = $request->query('search');
+                $query->where('name', 'like', '%' . $searchTerm . '%');
+            }
+
+            // Dodavanje paginacije (npr. 10 obroka po stranici)
+            $perPage = $request->query('per_page', 10);
+            $meals = $query->paginate($perPage);
+
+            return MealResource::collection($meals);
+        }
 
     // Prikaz jednog obroka
     public function show($id)
