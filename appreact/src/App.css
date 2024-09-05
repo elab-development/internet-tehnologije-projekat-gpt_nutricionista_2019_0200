@@ -1,38 +1,91 @@
-.App {
-  text-align: center;
+/* Colors */
+:root {
+  --dark-red: #a31621;
+  --light-beige: #fcf7f8;
+  --grey: #ced3dc;
+  --blue-grey: #4e8098;
+  --light-blue: #90c2e7;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  background-color: var(--light-beige);
+  color: var(--blue-grey);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.homepage-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  text-align: center;
 }
 
-.App-link {
-  color: #61dafb;
+.hero-section {
+  background-color: var(--light-blue);
+  padding: 50px;
+  width: 100%;
+  text-align: center;
+  color: var(--light-beige);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.hero-section h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.action-button {
+  background-color: var(--dark-red);
+  color: var(--light-beige);
+  border: none;
+  padding: 15px 30px;
+  font-size: 1rem;
+  margin: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: var(--blue-grey);
+}
+
+.tips-section {
+  background-color: var(--grey);
+  padding: 50px;
+  text-align: center;
+  width: 100%;
+}
+
+.tips-section h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.tips-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tip-box {
+  background-color: var(--light-beige);
+  padding: 20px;
+  width: 30%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tip-box h3 {
+  color: var(--dark-red);
+  margin-bottom: 15px;
+}
+
+.tip-box p {
+  font-size: 1rem;
+  color: var(--blue-grey);
 }
