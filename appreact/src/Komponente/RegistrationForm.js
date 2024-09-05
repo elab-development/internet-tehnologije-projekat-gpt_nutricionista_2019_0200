@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import InputField from './InputField';
 import './RegistrationForm.css';
 
 const RegistrationForm = () => {
@@ -20,7 +21,6 @@ const RegistrationForm = () => {
     medical_conditions: 'None'
   });
   
-
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -45,7 +45,6 @@ const RegistrationForm = () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/register', formData);
       
-      // Navigacija ka login strani nakon uspešne registracije
       navigate('/login');
     } catch (err) {
       setError('Registration failed. Please check your input.');
@@ -60,136 +59,100 @@ const RegistrationForm = () => {
         <form onSubmit={handleSubmit}>
           {step === 1 && (
             <div className="form-step">
-              <div className="form-group">
-                <label htmlFor="name">Name:</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email:</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password:</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password_confirmation">Confirm Password:</label>
-                <input
-                  type="password"
-                  id="password_confirmation"
-                  name="password_confirmation"
-                  value={formData.password_confirmation}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+              <InputField
+                label="Name"
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+              <InputField
+                label="Email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <InputField
+                label="Password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <InputField
+                label="Confirm Password"
+                type="password"
+                name="password_confirmation"
+                value={formData.password_confirmation}
+                onChange={handleChange}
+                required
+              />
               <button type="button" className="action-button" onClick={handleNextStep}>Next</button>
             </div>
           )}
 
           {step === 2 && (
             <div className="form-step">
-              <div className="form-group">
-                <label htmlFor="height">Height (cm):</label>
-                <input
-                  type="number"
-                  id="height"
-                  name="height"
-                  value={formData.height}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="weight">Weight (kg):</label>
-                <input
-                  type="number"
-                  id="weight"
-                  name="weight"
-                  value={formData.weight}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="date_of_birth">Date of Birth:</label>
-                <input
-                  type="date"
-                  id="date_of_birth"
-                  name="date_of_birth"
-                  value={formData.date_of_birth}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="food_preferences">Food Preferences:</label>
-                <input
-                  type="text"
-                  id="food_preferences"
-                  name="food_preferences"
-                  value={formData.food_preferences}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="dietary_goals">Dietary Goals:</label>
-                <input
-                  type="text"
-                  id="dietary_goals"
-                  name="dietary_goals"
-                  value={formData.dietary_goals}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="activity_level">Activity Level:</label>
-                <input
-                  type="text"
-                  id="activity_level"
-                  name="activity_level"
-                  value={formData.activity_level}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="target_weight">Target Weight (kg):</label>
-                <input
-                  type="number"
-                  id="target_weight"
-                  name="target_weight"
-                  value={formData.target_weight}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="medical_conditions">Medical Conditions:</label>
-                <input
-                  type="text"
-                  id="medical_conditions"
-                  name="medical_conditions"
-                  value={formData.medical_conditions}
-                  onChange={handleChange}
-                />
-              </div>
+              <InputField
+                label="Height (cm)"
+                type="number"
+                name="height"
+                value={formData.height}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Weight (kg)"
+                type="number"
+                name="weight"
+                value={formData.weight}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Date of Birth"
+                type="date"
+                name="date_of_birth"
+                value={formData.date_of_birth}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Food Preferences"
+                type="text"
+                name="food_preferences"
+                value={formData.food_preferences}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Dietary Goals"
+                type="text"
+                name="dietary_goals"
+                value={formData.dietary_goals}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Activity Level"
+                type="text"
+                name="activity_level"
+                value={formData.activity_level}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Target Weight (kg)"
+                type="number"
+                name="target_weight"
+                value={formData.target_weight}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Medical Conditions"
+                type="text"
+                name="medical_conditions"
+                value={formData.medical_conditions}
+                onChange={handleChange}
+              />
               <div className="button-group">
                 <button type="button" className="action-button" onClick={handlePrevStep}>Back</button>
                 <button type="submit" className="action-button">Register</button>

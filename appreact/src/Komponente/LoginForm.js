@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import InputField from './InputField';
 import './LoginForm.css';  
 
 const LoginForm = () => {
@@ -22,11 +23,9 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login', formData); // Zameniti sa stvarnim URL-om API-ja
+      const response = await axios.post('http://127.0.0.1:8000/api/login', formData);
       
-      // Čuvanje tokena u sessionStorage
       sessionStorage.setItem('auth_token', response.data.access_token);
-      
       setSuccess('Login successful!');
       setError(null);
     } catch (err) {
@@ -42,30 +41,22 @@ const LoginForm = () => {
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
+          <InputField
+            label="Email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <InputField
+            label="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
           <button type="submit" className="action-button">Login</button>
         </form>
       </div>
