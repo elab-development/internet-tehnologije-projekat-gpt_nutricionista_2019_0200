@@ -14,7 +14,7 @@ body {
     color: var(--blue-grey);
 }
 
-.login-container {
+.registration-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,12 +22,13 @@ body {
     background-color: var(--light-blue);
 }
 
-.login-form-section {
+.registration-form-section {
     background-color: var(--grey);
     padding: 50px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 400px;
 }
 
 h1 {
@@ -76,4 +77,14 @@ h1 {
 .success-message {
     color: var(--blue-grey);
     font-weight: bold;
+}
+
+.form-step {
+    margin-bottom: 20px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 }
