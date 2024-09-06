@@ -22,7 +22,7 @@ class AddNutritionFieldsToUsersTable extends Migration
             $table->string('activity_level'); // Nivo fizičke aktivnosti
             $table->float('target_weight'); // Ciljana težina u kg
             $table->text('medical_conditions'); // Medicinska stanja
-            $table->string('role'); // Medicinska stanja
+            $table->string('role'); 
         });
     }
 

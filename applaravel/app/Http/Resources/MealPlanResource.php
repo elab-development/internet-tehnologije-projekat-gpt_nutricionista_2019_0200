@@ -17,8 +17,8 @@ class MealPlanResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'start_date' => $this->start_date->format('Y-m-d'),
-            'end_date' => $this->end_date->format('Y-m-d'),
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
             'total_calories' => $this->total_calories,
             'activity_level' => $this->activity_level,
             'protein_goal' => $this->protein_goal,

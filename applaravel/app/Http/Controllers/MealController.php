@@ -51,7 +51,7 @@ class MealController extends Controller
             'ingredients' => 'nullable|string',
             'instructions' => 'nullable|string',
             'meal_type' => 'required|string|max:50',
-            'servings' => 'required|integer|min:1',
+           
         ]);
 
         if ($validator->fails()) {
@@ -78,7 +78,7 @@ class MealController extends Controller
             'ingredients' => 'nullable|string',
             'instructions' => 'nullable|string',
             'meal_type' => 'required|string|max:50',
-            'servings' => 'required|integer|min:1',
+            
         ]);
 
         if ($validator->fails()) {

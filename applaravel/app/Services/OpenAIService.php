@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class OpenAIService
 {
@@ -23,29 +24,29 @@ class OpenAIService
             ]
         ];
 
-        // Poziv OpenAI API-ja
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
         ])->post($this->apiUrl, [
-            'model' => 'gpt-3.5-turbo',  
+            'model' => 'gpt-3.5-turbo',
             'messages' => $messages,
-            'temperature' => 0.7,  
+            'temperature' => 0.7,
         ]);
-
+        
+        Log::info($response->json());  // Ispis u log radi debugovanja
         return $response->json();
     }
 
     protected function createPrompt($userInput)
     {
-        // Kreiranje prompta na osnovu korisničkog unosa
-        $prompt = "Create a detailed diet plan for the following user profile:\n";
-        $prompt .= "User profile: " . json_encode($userInput) . "\n";
-        $prompt .= "Diet plan should be for a period of " . $userInput['period'] . " days.\n";
-        $prompt .= "Include meals that align with " . $userInput['preferences'] . " dietary preferences.\n";
-        $prompt .= "Each day should include breakfast, lunch, dinner, and two snacks.\n";
-        $prompt .= "Daily calorie goal: " . $userInput['calories'] . " calories.\n";
-        $prompt .= "Each meal should contain details about ingredients and preparation instructions.";
+        // Kreiraj prompt za generisanje JSON odgovora sa obrocima
+        $prompt = "Create a detailed diet plan for a user with the following details:\n";
+        $prompt .= "Period: " . $userInput['period'] . " days\n";
+        $prompt .= "Calories: " . $userInput['calories'] . "\n";
+        $prompt .= "Preferences: " . $userInput['preferences'] . "\n";
+        $prompt .= "Return the diet plan in JSON format with the following structure:\n";
+        $prompt .= "{ \"meals\": [{\"name\": \"Meal name\", \"description\": \"Meal description\", \"calories\": 500, \"meal_type\": \"breakfast\", \"ingredients\": [\"ingredient1\", \"ingredient2\"], \"instructions\": \"Prepare like this.\"}], \"protein_goal\": 100, \"fat_goal\": 50, \"carb_goal\": 150 }";
         return $prompt;
     }
+    
 }

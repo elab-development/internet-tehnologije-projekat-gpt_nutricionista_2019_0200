@@ -9,6 +9,7 @@ use App\Http\Resources\MealPlanResource;
 use App\Models\Meal;
 use App\Services\OpenAIService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MealPlanController extends Controller
 {
@@ -23,16 +24,17 @@ class MealPlanController extends Controller
     public function createMealPlan(Request $request)
     {
         $user = Auth::user();
-
+    
+        // Validacija unosa
         $validator = Validator::make($request->all(), [
             'period' => 'required|integer',
             'total_calories' => 'required|numeric',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-
+    
         // Kreiramo korisnički input na osnovu preferencija korisnika
         $userInput = [
             'user_id' => $user->id,
@@ -40,11 +42,24 @@ class MealPlanController extends Controller
             'preferences' => $user->food_preferences,
             'calories' => $request->input('total_calories'),
         ];
-
+    
         // Generišemo plan ishrane koristeći OpenAI
         $generatedPlan = $this->openAIService->generateDietPlan($userInput);
-
-        // Sačuvamo plan u bazu podataka
+    
+        // Provera da li postoji odgovor iz OpenAI API-a
+        if (!isset($generatedPlan['choices'][0]['message']['content'])) {
+            return response()->json(['error' => 'No valid response from OpenAI'], 500);
+        }
+    
+        // Parsiranje JSON stringa iz content polja
+        $parsedContent = json_decode($generatedPlan['choices'][0]['message']['content'], true);
+    
+        // Provera da li su obroci generisani
+        if (!isset($parsedContent['meals']) || !is_array($parsedContent['meals'])) {
+            return response()->json(['error' => 'No meals found in the generated plan'], 500);
+        }
+    
+        // Sačuvamo plan ishrane u bazu podataka tek kada imamo obroke
         $mealPlan = MealPlan::create([
             'user_id' => $user->id,
             'title' => 'Custom Meal Plan for ' . $user->name,
@@ -52,14 +67,14 @@ class MealPlanController extends Controller
             'end_date' => now()->addDays($request->input('period')),
             'total_calories' => $request->input('total_calories'),
             'activity_level' => $user->activity_level,
-            'protein_goal' => $generatedPlan['protein_goal'] ?? 0, // Prilagođavanje podataka
-            'fat_goal' => $generatedPlan['fat_goal'] ?? 0,
-            'carb_goal' => $generatedPlan['carb_goal'] ?? 0,
+            'protein_goal' => $parsedContent['protein_goal'] ?? 0,
+            'fat_goal' => $parsedContent['fat_goal'] ?? 0,
+            'carb_goal' => $parsedContent['carb_goal'] ?? 0,
             'status' => 'active',
         ]);
-
+    
         // Dodajemo obroke u plan ishrane
-        foreach ($generatedPlan['meals'] as $mealData) {
+        foreach ($parsedContent['meals'] as $mealData) {
             Meal::create([
                 'meal_plan_id' => $mealPlan->id,
                 'name' => $mealData['name'],
@@ -68,14 +83,16 @@ class MealPlanController extends Controller
                 'meal_type' => $mealData['meal_type'],
                 'ingredients' => json_encode($mealData['ingredients']),
                 'instructions' => $mealData['instructions'],
-                'servings' => $mealData['servings'],
+               
                 'date' => now(),
                 'time' => now()->format('H:i:s'),
             ]);
         }
-
+    
+        // Vraćamo odgovor sa kreiranim planom i obrocima
         return response()->json(['meal_plan' => $mealPlan, 'meals' => $mealPlan->meals], 201);
     }
+    
 
 
     // Prikaz svih planova ishrane za ulogovanog korisnika
@@ -162,9 +179,19 @@ class MealPlanController extends Controller
     // Brisanje plana ishrane
     public function destroy($id)
     {
+        // Pronađi plan ishrane na osnovu ID-a
         $mealPlan = MealPlan::findOrFail($id);
-        $mealPlan->delete();
-
-        return response()->json(['message' => 'Meal plan deleted successfully']);
+    
+        // Pokreni transakciju kako bi osigurali da se sve operacije izvrše u jednom koraku
+        DB::transaction(function () use ($mealPlan) {
+            // Brisanje svih obroka povezanih sa planom ishrane
+            $mealPlan->meals()->delete();
+    
+            // Brisanje samog plana ishrane
+            $mealPlan->delete();
+        });
+    
+        // Vraćamo potvrdu o uspešnom brisanju
+        return response()->json(['message' => 'Meal plan and associated meals deleted successfully']);
     }
 }
