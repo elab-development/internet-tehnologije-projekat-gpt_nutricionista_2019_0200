@@ -4,7 +4,7 @@ import InputField from './InputField';
 import './LoginForm.css';  
 import { useNavigate } from 'react-router-dom';
 
-const LoginForm = () => {
+const LoginForm = ({ setUser, setToken }) => {
   const [formData, setFormData] = useState({
     email: 'wturcotte@example.com',
     password: 'password',
@@ -12,7 +12,8 @@ const LoginForm = () => {
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  let navigacija= useNavigate();
+  let navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,11 +27,16 @@ const LoginForm = () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/login', formData);
       
-      sessionStorage.setItem('auth_token', response.data.access_token);
-      sessionStorage.setItem('user', response.data.user);
+      const token = response.data.access_token;
+      const user = response.data.user;
+      sessionStorage.setItem('auth_token', token);
+      sessionStorage.setItem('user', JSON.stringify(user));
+      setToken(token);
+      setUser(user);
+      
       setSuccess('Login successful!');
       setError(null);
-      navigacija('/createmealplan')
+      navigate('/createmealplan');
     } catch (err) {
       setError('Login failed. Please check your credentials.');
       setSuccess(null);
