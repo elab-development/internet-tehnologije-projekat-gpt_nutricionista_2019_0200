@@ -5,6 +5,7 @@ import Pocetna from './Komponente/Pocetna';
 import LoginForm from './Komponente/LoginForm';
 import RegistrationForm from './Komponente/RegistrationForm';
 import CreateMealPlan from './Komponente/CreateMealPlan';
+import MyMealPlans from './Komponente/MyMealPlans';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/createmealplan" element={<CreateMealPlan />} />
+        <Route path="/myMealPlans" element={<MyMealPlans />} />
+
       
       </Routes>
     </Router>
