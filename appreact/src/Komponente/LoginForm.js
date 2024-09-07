@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import InputField from './InputField';
 import './LoginForm.css';  
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: 'wturcotte@example.com',
+    password: 'password',
   });
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
+  let navigacija= useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,8 +27,10 @@ const LoginForm = () => {
       const response = await axios.post('http://127.0.0.1:8000/api/login', formData);
       
       sessionStorage.setItem('auth_token', response.data.access_token);
+      sessionStorage.setItem('user', response.data.user);
       setSuccess('Login successful!');
       setError(null);
+      navigacija('/createmealplan')
     } catch (err) {
       setError('Login failed. Please check your credentials.');
       setSuccess(null);
