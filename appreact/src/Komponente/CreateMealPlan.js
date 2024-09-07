@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import MealRow from "./MealRow";  
+import MealRow from "./MealRow";
+import jsPDF from "jspdf";
+import "jspdf-autotable"; // Importing the library for auto table creation
 import './CreateMealPlan.css';
 
 const CreateMealPlan = () => {
@@ -34,6 +36,29 @@ const CreateMealPlan = () => {
       setError("Failed to create meal plan. Please try again.");
       setLoading(false);
     }
+  };
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    const tableColumn = ["Meal Name", "Description", "Calories", "Meal Type"];
+    const tableRows = [];
+
+    mealPlan.meals.forEach((meal) => {
+      const mealData = [
+        meal.name,
+        meal.description,
+        meal.calories,
+        meal.meal_type,
+      ];
+      tableRows.push(mealData);
+    });
+
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+    });
+
+    doc.save("meal-plan.pdf");
   };
 
   return (
@@ -79,10 +104,13 @@ const CreateMealPlan = () => {
             </thead>
             <tbody>
               {mealPlan.meals.map((meal, index) => (
-                <MealRow key={index} meal={meal} />  
+                <MealRow key={index} meal={meal} />
               ))}
             </tbody>
           </table>
+          <button className="action-button" onClick={handleDownloadPDF}>
+            Download as PDF
+          </button>
         </div>
       )}
     </div>
