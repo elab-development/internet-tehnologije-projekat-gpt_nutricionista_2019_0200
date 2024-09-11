@@ -194,4 +194,20 @@ class MealPlanController extends Controller
         // Vraćamo potvrdu o uspešnom brisanju
         return response()->json(['message' => 'Meal plan and associated meals deleted successfully']);
     }
+    public function getMealPlansByUser(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'user_id' => 'required|exists:users,id',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
+    }
+
+    $userId = $request->input('user_id');
+    $mealPlans = MealPlan::where('user_id', $userId)->get();
+
+    return MealPlanResource::collection($mealPlans);
+}
+
 }

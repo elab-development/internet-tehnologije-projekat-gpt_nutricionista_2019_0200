@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MealPlanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MealController;
-
+ 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +17,9 @@ use App\Http\Controllers\MealController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+ 
+
+Route::middleware('auth:sanctum')->get('/meal-plans/user', [MealPlanController::class, 'getMealPlansByUser']);
 
 
 
@@ -24,6 +27,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
+
+
+Route::middleware('auth:sanctum')->get('/users', [AuthController::class, 'getAllUsers']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/meal-plans/create', [MealPlanController::class, 'createMealPlan']);

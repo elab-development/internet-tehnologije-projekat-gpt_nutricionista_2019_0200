@@ -89,4 +89,12 @@ class AuthController extends Controller
             'message' => 'Successfully logged out'
         ]);
     }
+    // Metoda za dobijanje svih korisnika
+    public function getAllUsers()
+    {
+        $users = User::all(); // Učitavanje svih korisnika iz baze
+
+        return response()->json($users);
+    }
+
 }

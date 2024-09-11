@@ -6,6 +6,7 @@ import RegistrationForm from './Komponente/RegistrationForm';
 import CreateMealPlan from './Komponente/CreateMealPlan';
 import MyMealPlans from './Komponente/MyMealPlans';
 import Navbar from './Komponente/Navbar';
+import UserList from './Komponente/UserList';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -32,6 +33,7 @@ function App() {
           <>
             <Route path="/createmealplan" element={<CreateMealPlan />} />
             <Route path="/myMealPlans" element={<MyMealPlans />} />
+            <Route path="/userList" element={<UserList />} />
           </>
         )}
       </Routes>
