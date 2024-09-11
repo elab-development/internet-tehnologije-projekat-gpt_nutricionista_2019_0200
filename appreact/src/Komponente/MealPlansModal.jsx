@@ -43,6 +43,37 @@ const MealPlansModal = ({ user, onClose }) => {
     }
   };
 
+  // Function to delete a meal
+  const handleDeleteMeal = async (mealId) => {
+    const token = sessionStorage.getItem("auth_token");
+    try {
+      await axios.delete(`http://127.0.0.1:8000/api/meals/${mealId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMeals(meals.filter((meal) => meal.id !== mealId)); // Remove deleted meal from state
+    } catch (err) {
+      console.error("Failed to delete meal:", err);
+    }
+  };
+
+  // Function to delete a meal plan
+  const handleDeleteMealPlan = async (mealPlanId) => {
+    const token = sessionStorage.getItem("auth_token");
+    try {
+      await axios.delete(`http://127.0.0.1:8000/api/meal-plans/${mealPlanId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMealPlans(mealPlans.filter((plan) => plan.id !== mealPlanId)); // Remove deleted plan from state
+      setSelectedMealPlan(null); // Close meals view if plan is deleted
+    } catch (err) {
+      console.error("Failed to delete meal plan:", err);
+    }
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -56,6 +87,7 @@ const MealPlansModal = ({ user, onClose }) => {
               <li key={plan.id}>
                 {plan.title} - {plan.total_calories} calories
                 <button onClick={() => handleViewMeals(plan)}>View Meals</button>
+                <button onClick={() => handleDeleteMealPlan(plan.id)}>Delete Plan</button>
               </li>
             ))}
           </ul>
@@ -69,7 +101,10 @@ const MealPlansModal = ({ user, onClose }) => {
             {meals.length > 0 ? (
               <ul>
                 {meals.map((meal) => (
-                  <li key={meal.id}>{meal.name} - {meal.calories} calories</li>
+                  <li key={meal.id}>
+                    {meal.name} - {meal.calories} calories
+                    <button onClick={() => handleDeleteMeal(meal.id)}>Delete Meal</button>
+                  </li>
                 ))}
               </ul>
             ) : (
