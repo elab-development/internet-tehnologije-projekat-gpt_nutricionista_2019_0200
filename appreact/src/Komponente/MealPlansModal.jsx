@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import MealPlanModal from './MealPlanModal'; // Import new modal component
 import './MealPlansModal.css';
 
 const MealPlansModal = ({ user, onClose }) => {
@@ -7,6 +8,8 @@ const MealPlansModal = ({ user, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [selectedMealPlan, setSelectedMealPlan] = useState(null);
   const [meals, setMeals] = useState([]);
+  const [modalMode, setModalMode] = useState(null); // Mode for ADD or UPDATE
+  const [editingMealPlan, setEditingMealPlan] = useState(null); // MealPlan being edited
 
   useEffect(() => {
     const fetchMealPlans = async () => {
@@ -43,35 +46,41 @@ const MealPlansModal = ({ user, onClose }) => {
     }
   };
 
-  // Function to delete a meal
-  const handleDeleteMeal = async (mealId) => {
+  const handleCreateOrUpdateMealPlan = async (formData) => {
     const token = sessionStorage.getItem("auth_token");
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/meals/${mealId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setMeals(meals.filter((meal) => meal.id !== mealId)); // Remove deleted meal from state
+      if (modalMode === "ADD") {
+        const response = await axios.post('http://127.0.0.1:8000/api/meal-plans', formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setMealPlans([...mealPlans, response.data.data]); // Add new meal plan
+      } else if (modalMode === "UPDATE") {
+        const response = await axios.put(`http://127.0.0.1:8000/api/meal-plans/${editingMealPlan.id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setMealPlans(
+          mealPlans.map((plan) => (plan.id === editingMealPlan.id ? response.data.data : plan))
+        ); // Update existing plan
+      }
+      setModalMode(null);
+      setEditingMealPlan(null);
     } catch (err) {
-      console.error("Failed to delete meal:", err);
+      console.error(`Failed to ${modalMode === 'ADD' ? 'create' : 'update'} meal plan:`, err);
     }
   };
 
-  // Function to delete a meal plan
-  const handleDeleteMealPlan = async (mealPlanId) => {
-    const token = sessionStorage.getItem("auth_token");
-    try {
-      await axios.delete(`http://127.0.0.1:8000/api/meal-plans/${mealPlanId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setMealPlans(mealPlans.filter((plan) => plan.id !== mealPlanId)); // Remove deleted plan from state
-      setSelectedMealPlan(null); // Close meals view if plan is deleted
-    } catch (err) {
-      console.error("Failed to delete meal plan:", err);
-    }
+  const handleOpenAddModal = () => {
+    setModalMode("ADD");
+    setEditingMealPlan(null); // Clear any editing state
+  };
+
+  const handleOpenUpdateModal = (mealPlan) => {
+    setModalMode("UPDATE");
+    setEditingMealPlan(mealPlan);
   };
 
   return (
@@ -79,6 +88,8 @@ const MealPlansModal = ({ user, onClose }) => {
       <div className="modal-content">
         <h2>Meal Plans for {user.name}</h2>
         <button onClick={onClose}>Close</button>
+        <button onClick={handleOpenAddModal}>Add Meal Plan</button>
+
         {loading ? (
           <p>Loading meal plans...</p>
         ) : mealPlans.length > 0 ? (
@@ -87,7 +98,7 @@ const MealPlansModal = ({ user, onClose }) => {
               <li key={plan.id}>
                 {plan.title} - {plan.total_calories} calories
                 <button onClick={() => handleViewMeals(plan)}>View Meals</button>
-                <button onClick={() => handleDeleteMealPlan(plan.id)}>Delete Plan</button>
+                <button onClick={() => handleOpenUpdateModal(plan)}>Edit Plan</button>
               </li>
             ))}
           </ul>
@@ -103,7 +114,6 @@ const MealPlansModal = ({ user, onClose }) => {
                 {meals.map((meal) => (
                   <li key={meal.id}>
                     {meal.name} - {meal.calories} calories
-                    <button onClick={() => handleDeleteMeal(meal.id)}>Delete Meal</button>
                   </li>
                 ))}
               </ul>
@@ -111,6 +121,15 @@ const MealPlansModal = ({ user, onClose }) => {
               <p>No meals found for this plan.</p>
             )}
           </div>
+        )}
+
+        {modalMode && (
+          <MealPlanModal
+            mode={modalMode}
+            mealPlan={editingMealPlan}
+            onSubmit={handleCreateOrUpdateMealPlan}
+            onClose={() => setModalMode(null)}
+          />
         )}
       </div>
     </div>
