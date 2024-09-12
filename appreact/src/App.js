@@ -7,6 +7,7 @@ import CreateMealPlan from './Komponente/CreateMealPlan';
 import MyMealPlans from './Komponente/MyMealPlans';
 import Navbar from './Komponente/Navbar';
 import UserList from './Komponente/UserList';
+import NutritionixAPIComponent from './Komponente/NutritionixAPIComponent';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -29,6 +30,8 @@ function App() {
         <Route path="/" element={<Pocetna />} />
         <Route path="/login" element={<LoginForm setUser={setUser} setToken={setToken} />} />
         <Route path="/register" element={<RegistrationForm />} />
+        <Route path="/food" element={<NutritionixAPIComponent />} />
+
         {token && (
           <>
             <Route path="/createmealplan" element={<CreateMealPlan />} />
