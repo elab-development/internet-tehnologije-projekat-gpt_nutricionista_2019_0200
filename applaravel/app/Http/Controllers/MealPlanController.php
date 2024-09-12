@@ -209,5 +209,21 @@ class MealPlanController extends Controller
 
     return MealPlanResource::collection($mealPlans);
 }
+public function paginatedMealPlans(Request $request)
+{
+    $user = Auth::user();
+    $perPage = $request->input('per_page', 5); // Koliko stavki po stranici (podrazumevano 5)
+    $searchTerm = $request->input('search', '');
+
+    // Filtriranje planova ishrane po korisniku i pretrazi
+    $mealPlans = MealPlan::where('user_id', $user->id)
+        ->where(function ($query) use ($searchTerm) {
+            $query->where('title', 'LIKE', "%$searchTerm%")
+                  ->orWhere('total_calories', 'LIKE', "%$searchTerm%");
+        })
+        ->paginate($perPage);
+
+    return MealPlanResource::collection($mealPlans);
+}
 
 }

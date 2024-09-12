@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Navbar.css';   
+import './Navbar.css';
 
 const Navbar = ({ user, token, setUser, setToken }) => {
   const navigate = useNavigate();
@@ -38,11 +38,11 @@ const Navbar = ({ user, token, setUser, setToken }) => {
           <>
             <Link to="/createmealplan">Create Meal Plan</Link>
             <Link to="/myMealPlans">My Meal Plans</Link>
+            {user?.role === 'admin' && <Link to="/userList">User List</Link>}
             <button onClick={handleLogout} className="logout-button">Logout</button>
           </>
         )}
       </div>
-     
     </nav>
   );
 };

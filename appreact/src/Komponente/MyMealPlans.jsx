@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import useMealPlans from "./useMealPlans";  
 import MealDetailsModal from "./MealDetailsModal";  
 import './MyMealPlans.css';  
+import useMealPlans2 from "./useMealPlans2";
 
 const MyMealPlans = () => {
-  const { mealPlans, loading, error } = useMealPlans();
-  const [selectedMealPlan, setSelectedMealPlan] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5); // Number of items per page
   const [searchTerm, setSearchTerm] = useState(""); // Search/filter state
+
+  // Fetch meal plans with pagination
+  const { mealPlans, loading, error, totalPages } = useMealPlans2(currentPage, itemsPerPage);
+  const [selectedMealPlan, setSelectedMealPlan] = useState(null);
 
   const handleOpenModal = (mealPlan) => {
     setSelectedMealPlan(mealPlan);
@@ -17,21 +20,6 @@ const MyMealPlans = () => {
   const handleCloseModal = () => {
     setSelectedMealPlan(null);
   };
-
-  // Filter meal plans based on search term
-  const filteredMealPlans = mealPlans.filter((mealPlan) => {
-    return (
-      mealPlan.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      mealPlan.total_calories.toString().includes(searchTerm)
-    );
-  });
-
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentMealPlans = filteredMealPlans.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(filteredMealPlans.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -66,10 +54,10 @@ const MyMealPlans = () => {
         className="search-input"
       />
 
-      {currentMealPlans.length > 0 ? (
+      {mealPlans.length > 0 ? (
         <>
           <ul className="meal-plan-list">
-            {currentMealPlans.map((mealPlan) => (
+            {mealPlans.map((mealPlan) => (
               <li key={mealPlan.id} className="meal-plan-item">
                 <span>{mealPlan.title} - {mealPlan.total_calories} calories</span>
                 <button onClick={() => handleOpenModal(mealPlan)}>Details</button>

@@ -36,7 +36,13 @@ const LoginForm = ({ setUser, setToken }) => {
       
       setSuccess('Login successful!');
       setError(null);
-      navigate('/createmealplan');
+      if(response.data.user.role=="admin"
+      ){
+        navigate('/createmealplan');
+      }else{
+        navigate('/userList');
+      }
+    
     } catch (err) {
       setError('Login failed. Please check your credentials.');
       setSuccess(null);

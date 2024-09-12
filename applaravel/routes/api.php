@@ -29,11 +29,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 
+
 Route::middleware('auth:sanctum')->get('/users', [AuthController::class, 'getAllUsers']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/meal-plans/create', [MealPlanController::class, 'createMealPlan']);
-
+    Route::get('/meal-plans/paginated', [MealPlanController::class, 'paginatedMealPlans']);
     Route::get('/meal-plans', [MealPlanController::class, 'index']);
     Route::get('/meal-plans/{id}', [MealPlanController::class, 'show']);
     Route::post('/meal-plans', [MealPlanController::class, 'store']);

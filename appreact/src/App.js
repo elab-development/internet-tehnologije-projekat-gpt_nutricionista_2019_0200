@@ -36,6 +36,9 @@ function App() {
           <>
             <Route path="/createmealplan" element={<CreateMealPlan />} />
             <Route path="/myMealPlans" element={<MyMealPlans />} />
+
+
+            {/* za admina */}
             <Route path="/userList" element={<UserList />} />
           </>
         )}

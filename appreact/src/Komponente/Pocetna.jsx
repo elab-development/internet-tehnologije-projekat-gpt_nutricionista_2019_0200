@@ -11,8 +11,7 @@ const Pocetna = () => {
         <div className="hero-content">
           <h1>Welcome to Your Nutrition & Wellness Journey</h1>
           <p>Take control of your health with personalized nutrition advice, wellness tips, and a balanced lifestyle.</p>
-          <button onClick={() => navigate('/login')} className="action-button">Login</button>
-          <button onClick={() => navigate('/register')} className="action-button">Register</button>
+ 
         </div>
       </header>
       
