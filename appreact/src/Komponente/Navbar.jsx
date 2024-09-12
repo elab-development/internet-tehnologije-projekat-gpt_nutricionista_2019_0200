@@ -38,6 +38,8 @@ const Navbar = ({ user, token, setUser, setToken }) => {
           <>
             <Link to="/createmealplan">Create Meal Plan</Link>
             <Link to="/myMealPlans">My Meal Plans</Link>
+            <Link to="/food">Food</Link>
+
             {user?.role === 'admin' && <Link to="/userList">User List</Link>}
             <button onClick={handleLogout} className="logout-button">Logout</button>
           </>
