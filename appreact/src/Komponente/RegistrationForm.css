@@ -1,0 +1,90 @@
+/* Colors */
+:root {
+    --dark-red: #a31621;
+    --light-beige: #fcf7f8;
+    --grey: #ced3dc;
+    --blue-grey: #4e8098;
+    --light-blue: #90c2e7;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background-color: var(--light-beige);
+    color: var(--blue-grey);
+}
+
+.registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--light-blue);
+}
+
+.registration-form-section {
+    background-color: var(--grey);
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 400px;
+}
+
+h1 {
+    color: var(--dark-red);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--blue-grey);
+    border-radius: 5px;
+}
+
+.action-button {
+    background-color: var(--dark-red);
+    color: var(--light-beige);
+    border: none;
+    padding: 15px 30px;
+    font-size: 1rem;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: var(--blue-grey);
+}
+
+.error-message {
+    color: var(--dark-red);
+    font-weight: bold;
+}
+
+.success-message {
+    color: var(--blue-grey);
+    font-weight: bold;
+}
+
+.form-step {
+    margin-bottom: 20px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}

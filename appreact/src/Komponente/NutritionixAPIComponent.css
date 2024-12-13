@@ -1,0 +1,30 @@
+.nutritionix-container {
+    padding: 20px;
+  }
+  
+  .nutritionix-form {
+    margin-bottom: 20px;
+  }
+  
+  .nutrition-table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+  }
+  
+  .nutrition-table th, .nutrition-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .nutrition-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  
+  .chart-container {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
